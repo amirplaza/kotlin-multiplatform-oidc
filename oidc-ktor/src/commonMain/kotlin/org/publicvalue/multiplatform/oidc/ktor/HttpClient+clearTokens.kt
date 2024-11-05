@@ -1,7 +1,10 @@
 package org.publicvalue.multiplatform.oidc.ktor
 
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.api.ClientPlugin
 import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.AuthConfig
+import io.ktor.client.plugins.auth.authProviders
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.plugins.plugin
 
@@ -9,7 +12,7 @@ import io.ktor.client.plugins.plugin
 // Force the Auth plugin to invoke the `loadTokens` block again on the next client request.
 fun HttpClient.clearTokens() {
     try {
-        plugin(Auth).providers
+        authProviders
             .filterIsInstance<BearerAuthProvider>()
             .first().clearToken()
     } catch (e: IllegalStateException) {
